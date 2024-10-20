@@ -5,7 +5,7 @@ namespace Common.Packets
 {
     public static class PacketReader
     {
-        private static readonly Encoding _encoding = Encoding.UTF8;
+        private static readonly Encoding _encoding = Encoding.Unicode;
         private static readonly int _bufferSize = 2 * 1024;
 
         public static bool TryReadPacket(TcpClient client, out Packet? packet)

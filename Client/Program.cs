@@ -1,5 +1,9 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 using ChatClient;
+
+Console.InputEncoding = Encoding.Unicode;
+Console.OutputEncoding = Encoding.Unicode;
 
 try
 {
@@ -9,7 +13,6 @@ try
     var username = Console.ReadLine();
 
     client.Connect(username);
-
     var printMessages = new Thread(() => ReceiveMessages(client));
     printMessages.Start();
 

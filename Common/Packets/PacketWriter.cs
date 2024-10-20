@@ -5,7 +5,7 @@ namespace Common.Packets
 {
     public static class PacketWriter
     {
-        private static readonly Encoding _encoding = Encoding.UTF8;
+        private static readonly Encoding _encoding = Encoding.Unicode;
 
         public static bool TryWritePacket(TcpClient client, Packet packet)
         {
