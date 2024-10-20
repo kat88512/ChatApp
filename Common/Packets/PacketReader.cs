@@ -8,12 +8,14 @@ namespace Common.Packets
         private static readonly Encoding _encoding = Encoding.UTF8;
         private static readonly int _bufferSize = 2 * 1024;
 
-        public static bool TryReadPacket(NetworkStream stream, out Packet? packet)
+        public static bool TryReadPacket(TcpClient client, out Packet? packet)
         {
             packet = null;
 
             try
             {
+                var stream = client.GetStream();
+
                 int bytesRead;
                 byte[] buffer = new byte[_bufferSize];
 
@@ -31,7 +33,7 @@ namespace Common.Packets
                     return false;
                 }
             }
-            catch (IOException)
+            catch (Exception)
             {
                 return false;
             }

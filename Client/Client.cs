@@ -27,10 +27,9 @@ namespace ChatClient
             if (!_client.Connected)
             {
                 _client.Connect(_hostname, _port);
-                var stream = _client.GetStream();
 
                 var request = ClientPacket.Connect(username);
-                PacketWriter.TryWritePacket(stream, request);
+                PacketWriter.TryWritePacket(_client, request);
             }
         }
 
@@ -38,7 +37,7 @@ namespace ChatClient
         {
             message = null;
 
-            PacketReader.TryReadPacket(_client.GetStream(), out Packet? packet);
+            PacketReader.TryReadPacket(_client, out Packet? packet);
             if (packet is not null)
             {
                 switch ((ServerCode)packet.Code)
@@ -71,7 +70,7 @@ namespace ChatClient
 
         public void SendMessage(string message)
         {
-            PacketWriter.TryWritePacket(_client.GetStream(), ClientPacket.SendChatMessage(message));
+            PacketWriter.TryWritePacket(_client, ClientPacket.SendChatMessage(message));
         }
     }
 }

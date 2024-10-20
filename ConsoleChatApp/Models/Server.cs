@@ -41,7 +41,7 @@ namespace ChatServer.Models
                     User? newUser = null;
 
                     var client = _listener.AcceptTcpClient();
-                    PacketReader.TryReadPacket(client.GetStream(), out Packet? packet);
+                    PacketReader.TryReadPacket(client, out Packet? packet);
 
                     if (packet is not null)
                     {
@@ -107,7 +107,7 @@ namespace ChatServer.Models
 
         public void ListenForMessages(User user)
         {
-            PacketReader.TryReadPacket(user.ClientSocket.GetStream(), out Packet? packet);
+            PacketReader.TryReadPacket(user.ClientSocket, out Packet? packet);
 
             while (packet is not null)
             {
@@ -128,7 +128,7 @@ namespace ChatServer.Models
             {
                 lock (recipent)
                 {
-                    PacketWriter.TryWritePacket(recipent.GetStream(), packet);
+                    PacketWriter.TryWritePacket(recipent, packet);
                 }
             }
         }

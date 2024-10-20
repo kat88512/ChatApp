@@ -7,16 +7,17 @@ namespace Common.Packets
     {
         private static readonly Encoding _encoding = Encoding.UTF8;
 
-        public static bool TryWritePacket(NetworkStream stream, Packet packet)
+        public static bool TryWritePacket(TcpClient client, Packet packet)
         {
             try
             {
+                var stream = client.GetStream();
                 var contentAsBytes = _encoding.GetBytes(packet.Content);
 
                 stream.Write([packet.Code], 0, 1);
                 stream.Write(contentAsBytes, 0, contentAsBytes.Length);
             }
-            catch (IOException)
+            catch (Exception)
             {
                 return false;
             }
