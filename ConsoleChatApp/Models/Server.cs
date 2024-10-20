@@ -71,7 +71,7 @@ namespace ChatServer.Models
             if ((ClientCode)packet.Code == ClientCode.Connect)
             {
                 var username = packet.Content;
-                if (string.IsNullOrEmpty(username) || username.Length > 20)
+                if (string.IsNullOrEmpty(username))
                 {
                     return;
                 }
