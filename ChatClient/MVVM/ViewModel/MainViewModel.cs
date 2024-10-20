@@ -1,7 +1,7 @@
-﻿using ChatClient.Commands;
-using ChatClient.MVVM.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
+using ChatClient.Commands;
+using ChatClient.MVVM.Model;
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -16,7 +16,7 @@ namespace ChatClient.MVVM.ViewModel
         {
             Usernames = new ObservableCollection<string>();
             _client = new Client();
-            _client.usernamesInfoSent += UsernamesInfoSent;
+            _client.UsernamesInfoSent += UsernamesInfoSent;
             ConnectToServerCommand = new RelayCommand(ConnectToServer, CanConnectToServer);
         }
 

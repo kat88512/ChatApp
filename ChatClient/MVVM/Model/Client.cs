@@ -10,7 +10,7 @@ namespace ChatClient.MVVM.Model
         private readonly string _hostname;
         private readonly int _port;
 
-        public event Action<string[]> usernamesInfoSent;
+        public event Action<string[]>? UsernamesInfoSent;
 
         public Client()
         {
@@ -55,7 +55,7 @@ namespace ChatClient.MVVM.Model
                         case ServerCode.UsernamesInfo:
                         {
                             var usernames = packet.Content.Split(',');
-                            usernamesInfoSent.Invoke(usernames);
+                            UsernamesInfoSent?.Invoke(usernames);
                             break;
                         }
 
