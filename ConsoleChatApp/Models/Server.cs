@@ -50,6 +50,7 @@ namespace Server.Models
 
                     if (newUser is not null)
                     {
+                        BroadcastPacket(ServerPacket.UserConnected(newUser), GetUsersAsClients());
                         var thread = new Thread(() => ListenForMessages(newUser));
                         thread.Start();
                     }
@@ -97,10 +98,7 @@ namespace Server.Models
                     return;
                 }
 
-                lock (Users)
-                {
-                    var recipents = Users.Select(u => u.ClientSocket);
-                }
+                BroadcastPacket(packet, GetUsersAsClients());
             }
         }
 
@@ -119,6 +117,25 @@ namespace Server.Models
             }
 
             user.ClientSocket.Close();
+        }
+
+        public void BroadcastPacket(Packet packet, IEnumerable<TcpClient> recipents)
+        {
+            foreach (var recipent in recipents)
+            {
+                lock (recipent)
+                {
+                    PacketWriter.TryWritePacket(recipent.GetStream(), packet);
+                }
+            }
+        }
+
+        public IEnumerable<TcpClient> GetUsersAsClients()
+        {
+            lock (Users)
+            {
+                return Users.Select(u => u.ClientSocket);
+            }
         }
     }
 }
