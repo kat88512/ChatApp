@@ -35,7 +35,7 @@ namespace ChatClient.MVVM.ViewModel
 
         private bool CanConnectToServer(object? obj)
         {
-            if (string.IsNullOrWhiteSpace(ClientUsername))
+            if (string.IsNullOrWhiteSpace(ClientUsername) || _client.ConnectionSuccessful)
             {
                 return false;
             }
