@@ -1,7 +1,7 @@
 ﻿using Common.Codes;
 using Common.Packets;
 
-namespace Server.Models
+namespace ChatServer.Models
 {
     internal class ServerPacket : Packet
     {

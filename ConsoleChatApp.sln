@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "ConsoleChatApp\Server.csproj", "{48FCA454-F8C9-44B6-9CCC-73F7C227EE5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ConsoleChatApp\ChatServer.csproj", "{48FCA454-F8C9-44B6-9CCC-73F7C227EE5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{E30AF73E-8DDB-46AD-BE33-28BB96D643E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClient", "Client\ChatClient.csproj", "{E30AF73E-8DDB-46AD-BE33-28BB96D643E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{1F73F17D-8704-4740-9E57-F7A3630F78E4}"
 EndProject

@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using Common;
 using Common.Packets;
 
-namespace Server.Models
+namespace ChatServer.Models
 {
     internal class Server
     {
@@ -98,7 +98,10 @@ namespace Server.Models
                     return;
                 }
 
-                BroadcastPacket(packet, GetUsersAsClients());
+                BroadcastPacket(
+                    ServerPacket.NewChatMessage(user.Username, message),
+                    GetUsersAsClients()
+                );
             }
         }
 
@@ -119,7 +122,7 @@ namespace Server.Models
             user.ClientSocket.Close();
         }
 
-        public void BroadcastPacket(Packet packet, IEnumerable<TcpClient> recipents)
+        public void BroadcastPacket(ServerPacket packet, IEnumerable<TcpClient> recipents)
         {
             foreach (var recipent in recipents)
             {
