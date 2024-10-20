@@ -3,7 +3,8 @@
     public enum ServerCode
     {
         NewChatMessage = 0,
-        UsernameListChange = 1,
-        ServerAnnouncement = 2
+        ServerAnnouncement = 1,
+        UserConnected = 2,
+        UserDisconnected = 3
     }
 }
