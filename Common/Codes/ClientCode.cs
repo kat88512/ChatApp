@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Common.Codes
 {
     public enum ClientCode
     {
