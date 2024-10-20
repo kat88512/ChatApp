@@ -6,7 +6,6 @@ namespace Common.Packets
     public static class PacketReader
     {
         private static readonly Encoding _encoding = Encoding.Unicode;
-        private static readonly int _bufferSize = 2 * 1024;
 
         public static bool TryReadPacket(TcpClient client, out Packet? packet)
         {
@@ -16,16 +15,13 @@ namespace Common.Packets
             {
                 var stream = client.GetStream();
 
-                int bytesRead;
-                byte[] buffer = new byte[_bufferSize];
+                var code = ReadCode(stream);
 
-                var code = stream.ReadByte();
-                bytesRead = stream.Read(buffer, 0, buffer.Length);
+                TryReadContent(stream, out string? content);
 
-                if (bytesRead > 0)
+                if (content is not null)
                 {
-                    var content = _encoding.GetString(buffer, 0, bytesRead);
-                    packet = new Packet((byte)code, content);
+                    packet = new Packet(code, content);
                     return true;
                 }
                 else
@@ -37,6 +33,39 @@ namespace Common.Packets
             {
                 return false;
             }
+        }
+
+        private static byte ReadCode(NetworkStream stream)
+        {
+            return (byte)stream.ReadByte();
+        }
+
+        private static int ReadContentLength(NetworkStream stream)
+        {
+            byte[] buffer = new byte[4];
+            stream.ReadExactly(buffer, 0, 4);
+            var contentLength = BitConverter.ToInt32(buffer);
+
+            return contentLength;
+        }
+
+        private static bool TryReadContent(NetworkStream stream, out string? content)
+        {
+            content = null;
+            var contentLength = ReadContentLength(stream);
+
+            int bytesRead;
+            byte[] buffer = new byte[contentLength];
+
+            bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+            if (bytesRead > 0)
+            {
+                content = _encoding.GetString(buffer, 0, bytesRead);
+                return true;
+            }
+
+            return false;
         }
     }
 }
