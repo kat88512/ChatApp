@@ -10,7 +10,8 @@ namespace ChatServer.Models
 
         public static ServerPacket NewChatMessage(string sender, string message)
         {
-            var content = $"{sender} : {message}";
+            var time = DateTime.Now.ToShortTimeString();
+            var content = $"[{time}]{sender}: {message}";
             return new ServerPacket(ServerCode.NewChatMessage, content);
         }
 
