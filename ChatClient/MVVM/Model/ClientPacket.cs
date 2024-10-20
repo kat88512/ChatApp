@@ -8,14 +8,14 @@ namespace ChatClient.MVVM.Model
         private ClientPacket(ClientCode code, string content)
             : base((byte)code, content) { }
 
-        public static ClientPacket Connect(string username)
+        public static ClientPacket ConnectionRequest(string username)
         {
-            return new ClientPacket(ClientCode.Connect, username);
+            return new ClientPacket(ClientCode.ConnectionRequest, username);
         }
 
-        public static ClientPacket SendChatMessage(string message)
+        public static ClientPacket SendChatMessageRequest(string message)
         {
-            return new ClientPacket(ClientCode.SendChatMessage, message);
+            return new ClientPacket(ClientCode.SendChatMessageRequest, message);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public enum ClientCode
     {
-        Connect = 0,
-        SendChatMessage = 1
+        ConnectionRequest = 0,
+        SendChatMessageRequest = 1
     }
 }

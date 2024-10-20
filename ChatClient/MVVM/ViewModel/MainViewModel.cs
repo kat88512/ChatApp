@@ -21,7 +21,7 @@ namespace ChatClient.MVVM.ViewModel
         {
             _client = new Client();
 
-            _client.UsernamesInfoSent += AddUsers;
+            _client.UsernamesInfoReceived += AddUsers;
             _client.MessageReceived += AddToMessageHistory;
 
             ConnectToServerCommand = new RelayCommand(ConnectToServer, CanConnectToServer);

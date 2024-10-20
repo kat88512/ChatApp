@@ -1,7 +1,7 @@
-﻿using Common.Codes;
-using Common.Packets;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
+using Common.Codes;
+using Common.Packets;
 
 namespace ChatServer.Models
 {
@@ -79,7 +79,7 @@ namespace ChatServer.Models
         {
             newUser = null;
 
-            if ((ClientCode)packet.Code == ClientCode.Connect)
+            if ((ClientCode)packet.Code == ClientCode.ConnectionRequest)
             {
                 var username = packet.Content;
                 if (string.IsNullOrEmpty(username))
@@ -101,7 +101,7 @@ namespace ChatServer.Models
 
         public void HandleNewMessageRequest(Packet packet, User user)
         {
-            if ((ClientCode)packet.Code == ClientCode.SendChatMessage)
+            if ((ClientCode)packet.Code == ClientCode.SendChatMessageRequest)
             {
                 var message = packet.Content;
                 if (string.IsNullOrEmpty(message) || message.Length > 250)

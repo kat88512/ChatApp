@@ -10,7 +10,7 @@ namespace ChatClient.MVVM.Model
         private readonly string _hostname;
         private readonly int _port;
 
-        public event Action<string[]>? UsernamesInfoSent;
+        public event Action<string[]>? UsernamesInfoReceived;
         public event Action<string>? MessageReceived;
         public bool ConnectionSuccessful { get; private set; }
 
@@ -34,7 +34,7 @@ namespace ChatClient.MVVM.Model
             {
                 _client.Connect(_hostname, _port);
 
-                var request = ClientPacket.Connect(username);
+                var request = ClientPacket.ConnectionRequest(username);
                 PacketWriter.TryWritePacket(_client, request);
                 WaitForUsernamesInfo();
 
@@ -58,11 +58,6 @@ namespace ChatClient.MVVM.Model
                             break;
                         }
 
-                        case ServerCode.UsernamesInfo:
-                        {
-                            break;
-                        }
-
                         default:
                         {
                             break;
@@ -80,7 +75,7 @@ namespace ChatClient.MVVM.Model
                 if (packet is not null && (ServerCode)packet.Code == ServerCode.UsernamesInfo)
                 {
                     var usernames = packet.Content.Split(',');
-                    UsernamesInfoSent?.Invoke(usernames);
+                    UsernamesInfoReceived?.Invoke(usernames);
                     ConnectionSuccessful = true;
                 }
             }
@@ -93,7 +88,7 @@ namespace ChatClient.MVVM.Model
                 return;
             }
 
-            PacketWriter.TryWritePacket(_client, ClientPacket.SendChatMessage(message));
+            PacketWriter.TryWritePacket(_client, ClientPacket.SendChatMessageRequest(message));
         }
     }
 }
