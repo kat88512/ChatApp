@@ -30,21 +30,43 @@ namespace ChatClient.MVVM.Model
 
                 var request = ClientPacket.Connect(username);
                 PacketWriter.TryWritePacket(_client, request);
+
+                var readMessages = new Thread(ReadMessages);
+                readMessages.Start();
             }
         }
 
-        public void TryReadMessage(out string? message)
+        public void ReadMessages()
         {
-            message = null;
-
-            PacketReader.TryReadPacket(_client, out Packet? packet);
-
-            if (packet is not null && Enum.IsDefined((ServerCode)packet.Code))
+            while (_client.Connected)
             {
-                message = packet.Content;
-            }
+                PacketReader.TryReadPacket(_client, out Packet? packet);
+                if (packet is not null)
+                {
+                    switch ((ServerCode)packet.Code)
+                    {
+                        case ServerCode.NewChatMessage:
+                        {
+                            break;
+                        }
 
-            return;
+                        case ServerCode.ServerAnnouncement:
+                        {
+                            break;
+                        }
+
+                        case ServerCode.UserConnected:
+                        {
+                            break;
+                        }
+
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public void SendMessage(string message)
