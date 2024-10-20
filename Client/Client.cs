@@ -38,34 +38,13 @@ namespace ChatClient
             message = null;
 
             PacketReader.TryReadPacket(_client, out Packet? packet);
-            if (packet is not null)
+
+            if (packet is not null && Enum.IsDefined((ServerCode)packet.Code))
             {
-                switch ((ServerCode)packet.Code)
-                {
-                    case ServerCode.NewChatMessage:
-                    {
-                        message = packet.Content;
-                        return;
-                    }
-
-                    case ServerCode.ServerAnnouncement:
-                    {
-                        message = packet.Content;
-                        return;
-                    }
-
-                    case ServerCode.UserConnected:
-                    {
-                        message = packet.Content;
-                        return;
-                    }
-
-                    default:
-                    {
-                        break;
-                    }
-                }
+                message = packet.Content;
             }
+
+            return;
         }
 
         public void SendMessage(string message)
