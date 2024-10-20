@@ -14,6 +14,7 @@ namespace Server.Models
             return new ServerPacket(ServerCode.NewChatMessage, content);
         }
 
+        //Not yet used
         public static ServerPacket ServerAnnouncement(string message)
         {
             return new ServerPacket(ServerCode.ServerAnnouncement, message);
@@ -24,6 +25,7 @@ namespace Server.Models
             return new ServerPacket(ServerCode.UserConnected, user.Username);
         }
 
+        //Not yet used
         public static ServerPacket UserDisconnected(User user)
         {
             return new ServerPacket(ServerCode.UserDisconnected, user.Username);
