@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using ChatServer.Models;
+
+var server = new Server(7891, "Tcp Chat");
+server.Run();
