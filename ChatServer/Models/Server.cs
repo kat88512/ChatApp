@@ -1,7 +1,7 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using Common.Codes;
+﻿using Common.Codes;
 using Common.Packets;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ChatServer.Models
 {
@@ -50,6 +50,17 @@ namespace ChatServer.Models
 
                     if (newUser is not null)
                     {
+                        string[] usernames;
+
+                        lock (Users)
+                        {
+                            usernames = Users.Select(u => u.Username).ToArray();
+                        }
+
+                        BroadcastPacket(
+                            ServerPacket.UsernamesInfo(usernames),
+                            [newUser.ClientSocket]
+                        );
                         BroadcastPacket(ServerPacket.UserConnected(newUser), GetUsersAsClients());
                         var thread = new Thread(() => ListenForMessages(newUser));
                         thread.Start();

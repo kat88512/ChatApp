@@ -1,6 +1,6 @@
-﻿using System.Net.Sockets;
-using Common.Codes;
+﻿using Common.Codes;
 using Common.Packets;
+using System.Net.Sockets;
 
 namespace ChatClient.MVVM.Model
 {
@@ -9,6 +9,8 @@ namespace ChatClient.MVVM.Model
         private readonly TcpClient _client;
         private readonly string _hostname;
         private readonly int _port;
+
+        public event Action<string[]> usernamesInfoSent;
 
         public Client()
         {
@@ -46,24 +48,21 @@ namespace ChatClient.MVVM.Model
                     switch ((ServerCode)packet.Code)
                     {
                         case ServerCode.NewChatMessage:
-                        {
-                            break;
-                        }
+                            {
+                                break;
+                            }
 
-                        case ServerCode.ServerAnnouncement:
-                        {
-                            break;
-                        }
-
-                        case ServerCode.UserConnected:
-                        {
-                            break;
-                        }
+                        case ServerCode.UsernamesInfo:
+                            {
+                                var usernames = packet.Content.Split(',');
+                                usernamesInfoSent.Invoke(usernames);
+                                break;
+                            }
 
                         default:
-                        {
-                            break;
-                        }
+                            {
+                                break;
+                            }
                     }
                 }
             }

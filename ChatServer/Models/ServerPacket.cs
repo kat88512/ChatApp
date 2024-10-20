@@ -33,5 +33,11 @@ namespace ChatServer.Models
             var content = $"User: '{user.Username}' disconnected";
             return new ServerPacket(ServerCode.UserDisconnected, content);
         }
+
+        public static ServerPacket UsernamesInfo(string[] usernames)
+        {
+            var content = string.Join(',', usernames);
+            return new ServerPacket(ServerCode.UsernamesInfo, content);
+        }
     }
 }
