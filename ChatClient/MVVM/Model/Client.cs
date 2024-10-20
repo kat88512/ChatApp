@@ -12,6 +12,7 @@ namespace ChatClient.MVVM.Model
 
         public event Action<string[]>? UsernamesInfoReceived;
         public event Action<string>? MessageReceived;
+        public event Action<string>? UserConnected;
         public bool ConnectionSuccessful { get; private set; }
 
         public Client()
@@ -53,6 +54,18 @@ namespace ChatClient.MVVM.Model
                     switch ((ServerCode)packet.Code)
                     {
                         case ServerCode.NewChatMessage:
+                        {
+                            MessageReceived?.Invoke(packet.Content);
+                            break;
+                        }
+
+                        case ServerCode.UserConnected:
+                        {
+                            UserConnected?.Invoke(packet.Content);
+                            break;
+                        }
+
+                        case ServerCode.ServerAnnouncement:
                         {
                             MessageReceived?.Invoke(packet.Content);
                             break;

@@ -21,8 +21,9 @@ namespace ChatClient.MVVM.ViewModel
         {
             _client = new Client();
 
-            _client.UsernamesInfoReceived += AddUsers;
+            _client.UsernamesInfoReceived += FillUsers;
             _client.MessageReceived += AddToMessageHistory;
+            _client.UserConnected += AddUser;
 
             ConnectToServerCommand = new RelayCommand(ConnectToServer, CanConnectToServer);
             SendMessageCommand = new RelayCommand(SendMessage, CanSendMessage);
@@ -58,7 +59,7 @@ namespace ChatClient.MVVM.ViewModel
             return true;
         }
 
-        private void AddUsers(string[] usernames)
+        private void FillUsers(string[] usernames)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -72,6 +73,17 @@ namespace ChatClient.MVVM.ViewModel
         private void AddToMessageHistory(string message)
         {
             Application.Current.Dispatcher.Invoke(() => MessagesHistory.Add(message));
+        }
+
+        private void AddUser(string username)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (!Usernames.Any(u => u == username))
+                {
+                    Usernames.Add(username);
+                }
+            });
         }
     }
 }

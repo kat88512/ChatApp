@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using ChatServer.Strings;
 using Common.Codes;
 using Common.Packets;
 
@@ -61,7 +62,15 @@ namespace ChatServer.Models
                             ServerPacket.UsernamesInfo(usernames),
                             [newUser.ClientSocket]
                         );
+
                         BroadcastPacket(ServerPacket.UserConnected(newUser), GetUsersAsClients());
+                        BroadcastPacket(
+                            ServerPacket.ServerAnnouncement(
+                                AnnouncementStrings.UserConnected(newUser.Username)
+                            ),
+                            GetUsersAsClients()
+                        );
+
                         var thread = new Thread(() => ListenForMessages(newUser));
                         thread.Start();
                     }

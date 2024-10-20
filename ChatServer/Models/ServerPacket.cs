@@ -23,15 +23,13 @@ namespace ChatServer.Models
 
         public static ServerPacket UserConnected(User user)
         {
-            var content = $"New user connected: '{user.Username}'";
-            return new ServerPacket(ServerCode.UserConnected, content);
+            return new ServerPacket(ServerCode.UserConnected, user.Username);
         }
 
         //Not yet used
         public static ServerPacket UserDisconnected(User user)
         {
-            var content = $"User: '{user.Username}' disconnected";
-            return new ServerPacket(ServerCode.UserDisconnected, content);
+            return new ServerPacket(ServerCode.UserDisconnected, user.Username);
         }
 
         public static ServerPacket UsernamesInfo(string[] usernames)
