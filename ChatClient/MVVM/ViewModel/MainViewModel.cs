@@ -8,20 +8,21 @@ namespace ChatClient.MVVM.ViewModel
     internal class MainViewModel
     {
         private readonly Client _client;
-        public ObservableCollection<string> Usernames { get; set; }
+        public ObservableCollection<string> Usernames { get; set; } = [];
+        public ObservableCollection<string> MessagesHistory { get; set; } = [];
 
         public string? ClientUsername { get; set; }
-        public string? Message { get; set; }
+        public string? ClientMessage { get; set; }
 
         public RelayCommand ConnectToServerCommand { get; set; }
         public RelayCommand SendMessageCommand { get; set; }
 
         public MainViewModel()
         {
-            Usernames = new ObservableCollection<string>();
             _client = new Client();
 
-            _client.UsernamesInfoSent += UsernamesInfoSent;
+            _client.UsernamesInfoSent += AddUsers;
+            _client.MessageReceived += AddToMessageHistory;
 
             ConnectToServerCommand = new RelayCommand(ConnectToServer, CanConnectToServer);
             SendMessageCommand = new RelayCommand(SendMessage, CanSendMessage);
@@ -44,12 +45,12 @@ namespace ChatClient.MVVM.ViewModel
 
         private void SendMessage(object? obj)
         {
-            _client.SendMessage(Message);
+            _client.SendMessage(ClientMessage);
         }
 
         private bool CanSendMessage(object? obj)
         {
-            if (string.IsNullOrWhiteSpace(Message) || !_client.ConnectionSuccessful)
+            if (string.IsNullOrWhiteSpace(ClientMessage) || !_client.ConnectionSuccessful)
             {
                 return false;
             }
@@ -57,7 +58,7 @@ namespace ChatClient.MVVM.ViewModel
             return true;
         }
 
-        private void UsernamesInfoSent(string[] usernames)
+        private void AddUsers(string[] usernames)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -66,6 +67,11 @@ namespace ChatClient.MVVM.ViewModel
                     Usernames.Add(username);
                 }
             });
+        }
+
+        private void AddToMessageHistory(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() => MessagesHistory.Add(message));
         }
     }
 }

@@ -11,6 +11,7 @@ namespace ChatClient.MVVM.Model
         private readonly int _port;
 
         public event Action<string[]>? UsernamesInfoSent;
+        public event Action<string>? MessageReceived;
         public bool ConnectionSuccessful { get; private set; }
 
         public Client()
@@ -53,6 +54,7 @@ namespace ChatClient.MVVM.Model
                     {
                         case ServerCode.NewChatMessage:
                         {
+                            MessageReceived?.Invoke(packet.Content);
                             break;
                         }
 
@@ -84,7 +86,7 @@ namespace ChatClient.MVVM.Model
             }
         }
 
-        public void SendMessage(string message)
+        public void SendMessage(string? message)
         {
             if (message is null)
             {
