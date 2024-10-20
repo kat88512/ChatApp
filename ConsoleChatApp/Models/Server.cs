@@ -107,11 +107,12 @@ namespace ChatServer.Models
 
         public void ListenForMessages(User user)
         {
-            PacketReader.TryReadPacket(user.ClientSocket, out Packet? packet);
-
-            while (packet is not null)
+            while (PacketReader.TryReadPacket(user.ClientSocket, out Packet? packet))
             {
-                HandleNewMessageRequest(packet, user);
+                if (packet is not null)
+                {
+                    HandleNewMessageRequest(packet, user);
+                }
             }
 
             lock (Users)
