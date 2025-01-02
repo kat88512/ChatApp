@@ -44,6 +44,7 @@
                          Text="{Binding ClientMessage, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Width="55"
                      Content="Send"
+                        IsDefault="True"
                         Command="{Binding SendMessageCommand}"/>
 
 
