@@ -1,21 +1,36 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using ChatClient.Commands;
 using ChatClient.MVVM.Model;
 
 namespace ChatClient.MVVM.ViewModel
 {
-    internal class MainViewModel
+    internal class MainViewModel : INotifyPropertyChanged
     {
         private readonly Client _client;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public ObservableCollection<string> Usernames { get; set; } = [];
         public ObservableCollection<string> MessagesHistory { get; set; } = [];
 
         public string? ClientUsername { get; set; }
-        public string? ClientMessage { get; set; }
+        public string? ClientMessage
+        {
+            get { return _clientMessage; }
+            set
+            {
+                _clientMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public RelayCommand ConnectToServerCommand { get; set; }
         public RelayCommand SendMessageCommand { get; set; }
+
+        private string? _clientMessage;
 
         public MainViewModel()
         {
@@ -47,6 +62,7 @@ namespace ChatClient.MVVM.ViewModel
         private void SendMessage(object? obj)
         {
             _client.SendMessage(ClientMessage);
+            ClientMessage = null;
         }
 
         private bool CanSendMessage(object? obj)
@@ -84,6 +100,11 @@ namespace ChatClient.MVVM.ViewModel
                     Usernames.Add(username);
                 }
             });
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string name = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
